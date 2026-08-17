@@ -78,11 +78,13 @@ def d_scores(dtc_model, X_train, y_train):
     
     prediction_scores = pd.DataFrame({'Overfit': overfit, 'Cross-val-score': cv_score, 'Accuracy-score': accuracy}, index=[0])
 
+    class_report = classification_report(y_train, dtc_model.predict(X_train))
+
     figx_score, ax = plt.subplots(1,1, figsize=(10,8))
     ConfusionMatrixDisplay.from_estimator(dtc_model, X_train, y_train, ax=ax)
     figx_score.savefig("plots/confusion.png")
 
-    return prediction_df, prediction_scores, figx_score
+    return prediction_df, prediction_scores, class_report, figx_score
 
 def d_evaluate(dtc_model, X_train):
     """
@@ -176,7 +178,7 @@ def pr_curve(dtc_model, X_train, y_train):
         figx: Precision Recall Display.
         (avg_pre_recall, figx)
     """
-    avg_pre_recall = average_precision_score(y_train, dtc_model.predict_proba(X_train)[:,1])
+    avg_pre_recall = average_precision_score(y_train, dtc_model.predict_proba(X_train)[:,1]) * 100
 
     figx_pre, ax = plt.subplots(1,1, figsize=(10,8))
     PrecisionRecallDisplay.from_estimator(dtc_model, X_train, y_train, ax=ax)
@@ -231,7 +233,7 @@ if __name__ == "__main__":
     df = load_data()
     dtc_model, X_train, X_test, y_train, y_test= decision_tree(df)
 
-    prediction_df, prediction_scores, figx_score = d_scores(dtc_model, X_train, y_train)
+    prediction_df, prediction_scores, class_report, figx_score = d_scores(dtc_model, X_train, y_train)
 
     eval_df, figx_bar, figx_tree = d_evaluate(dtc_model, X_train)
 
