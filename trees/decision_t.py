@@ -80,7 +80,7 @@ def d_scores(dtc_model, X_train, y_train):
 
     figx_score, ax = plt.subplots(1,1, figsize=(10,8))
     ConfusionMatrixDisplay.from_estimator(dtc_model, X_train, y_train, ax=ax)
-    figx_score.savefig("confusion.png")
+    figx_score.savefig("plots/confusion.png")
 
     return prediction_df, prediction_scores, figx_score
 
@@ -106,11 +106,11 @@ def d_evaluate(dtc_model, X_train):
 
     figx_bar, ax = plt.subplots(1,1, figsize=(10,8))
     sns.barplot(x=feature_importance, y=X_train.columns, ax=ax).tick_params(labelsize=8)
-    figx_bar.savefig("bar.png")
+    figx_bar.savefig("plots/bar.png")
 
     figx_tree, ax = plt.subplots(1,1, figsize=(20,5))
     plot_tree(dtc_model, feature_names=X_train.columns, class_names=['healthy', 'disease'], filled=True, ax=ax)
-    figx_tree.savefig("tree.png")
+    figx_tree.savefig("plots/tree.png")
     return eval_df, figx_bar, figx_tree
 
 def roc_auc(dtc_model, X_train, y_train):
@@ -133,7 +133,7 @@ def roc_auc(dtc_model, X_train, y_train):
 
     figx_curve, ax = plt.subplots(1,1, figsize=(10,8))
     RocCurveDisplay.from_estimator(dtc_model, X_train, y_train, ax=ax)
-    figx_curve.savefig("roc.png")
+    figx_curve.savefig("plots/roc.png")
     return roc, figx_curve
 
 def val_curve(dtc_model, X_train, y_train):
@@ -159,7 +159,7 @@ def val_curve(dtc_model, X_train, y_train):
 
     figx_val, ax = plt.subplots(1,1, figsize=(10,8))
     ValidationCurveDisplay.from_estimator(dtc_model, X_train, y_train, param_name='max_depth', param_range=range(1,11), ax=ax)
-    figx_val.savefig("val_curve.png")
+    figx_val.savefig("plots/val_curve.png")
     return val_summary_df, figx_val
 
 def pr_curve(dtc_model, X_train, y_train):
@@ -180,7 +180,7 @@ def pr_curve(dtc_model, X_train, y_train):
 
     figx_pre, ax = plt.subplots(1,1, figsize=(10,8))
     PrecisionRecallDisplay.from_estimator(dtc_model, X_train, y_train, ax=ax)
-    figx_pre.savefig("precision_recall.png")
+    figx_pre.savefig("plots/precision_recall.png")
     return avg_pre_recall, figx_pre
 
 def lr_curve(dtc_model, X_train, y_train):
@@ -204,7 +204,7 @@ def lr_curve(dtc_model, X_train, y_train):
 
     figx_lr, ax = plt.subplots(1,1, figsize=(10,8))
     LearningCurveDisplay.from_estimator(dtc_model, X_train, y_train, ax=ax)
-    figx_lr.savefig("learning_curve.png")
+    figx_lr.savefig("plots/learning_curve.png")
     return train_size, train_scores, test_scores, figx_lr
 
 def calibration(dtc_model, X_train, y_train):
@@ -222,7 +222,7 @@ def calibration(dtc_model, X_train, y_train):
     """
     figx_cal, ax = plt.subplots(1,1, figsize=(10,8))
     CalibrationDisplay.from_estimator(dtc_model, X_train, y_train, ax=ax)
-    figx_cal.savefig("calibration.png")
+    figx_cal.savefig("plots/calibration.png")
     return figx_cal
 
 
