@@ -36,6 +36,7 @@ Install dependencies:
 - A ~9-point gap between train and cross-val shows mild overfitting
 - Predictions are driven mostly by ST_Slope_Up, ChestPainType_ASY, and Oldpeak
 - Shallow depth (3-4) generalizes best; more training data narrows the train/test gap
+- Held-out test set: 82.61% accuracy, 87.13 ROC-AUC — a modest drop from train, confirming good generalization
 
 ## Results
 | Metric | Score |
@@ -46,7 +47,7 @@ Install dependencies:
 | Average precision | 91.48 |
 | Overfit | 9.19 |
 
-## Classification report
+## Classification report (training)
 Per-class precision, recall, and f1-score (training data):
 
 | Class | Precision | Recall | F1-score | Support |
@@ -105,6 +106,24 @@ Mean train/test scores by training-set size:
 | 513 | 0.86 | 0.83 |
 
 - Train and test scores converge as data grows - more data reduces overfitting
+
+## Test results
+Performance on the held-out test set (unseen data):
+
+| Metric | Train | Test |
+|---|---|---|
+| Accuracy | 85.67 | 82.61 |
+| ROC-AUC | 92.58 | 87.13 |
+
+Test classification report:
+
+| Class | Precision | Recall | F1-score | Support |
+|---|---|---|---|---|
+| 0 (healthy) | 0.77 | 0.82 | 0.79 | 112 |
+| 1 (disease) | 0.87 | 0.83 | 0.85 | 164 |
+| Accuracy | | | 0.83 | 276 |
+| Macro avg | 0.82 | 0.83 | 0.82 | 276 |
+| Weighted avg | 0.83 | 0.83 | 0.83 | 276 |
 
 ## Plots
 Evaluation plots generated on each run

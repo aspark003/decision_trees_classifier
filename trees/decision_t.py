@@ -80,11 +80,13 @@ def d_scores(dtc_model, X_train, y_train):
 
     class_report = classification_report(y_train, dtc_model.predict(X_train))
 
+    confu_matrix = confusion_matrix(y_train, dtc_model.predict(X_train))
+
     figx_score, ax = plt.subplots(1,1, figsize=(10,8))
     ConfusionMatrixDisplay.from_estimator(dtc_model, X_train, y_train, ax=ax)
     figx_score.savefig("plots/confusion.png")
 
-    return prediction_df, prediction_scores, class_report, figx_score
+    return prediction_df, prediction_scores, class_report, confu_matrix, figx_score
 
 def d_evaluate(dtc_model, X_train):
     """
@@ -227,13 +229,20 @@ def calibration(dtc_model, X_train, y_train):
     figx_cal.savefig("plots/calibration.png")
     return figx_cal
 
+def test_results(dtc_model, X_test, y_test):
+    result_test_accuracy = dtc_model.score(X_test, y_test) * 100
+    result_test_roc_auc = roc_auc_score(y_test, dtc_model.predict_proba(X_test)[:,1]) * 100
+    result_confusion_matrix = confusion_matrix(y_test, dtc_model.predict(X_test))
+    result_class_report = classification_report(y_test, dtc_model.predict(X_test))
+    return result_test_accuracy, result_test_roc_auc, result_confusion_matrix, result_class_report
+
 
 if __name__ == "__main__":
     
     df = load_data()
     dtc_model, X_train, X_test, y_train, y_test= decision_tree(df)
 
-    prediction_df, prediction_scores, class_report, figx_score = d_scores(dtc_model, X_train, y_train)
+    prediction_df, prediction_scores, class_report, confu_matrix, figx_score = d_scores(dtc_model, X_train, y_train)
 
     eval_df, figx_bar, figx_tree = d_evaluate(dtc_model, X_train)
 
@@ -246,6 +255,8 @@ if __name__ == "__main__":
     train_size, train_scores, test_scores, figx_lr = lr_curve(dtc_model, X_train, y_train)
 
     figx_cal = calibration(dtc_model, X_train, y_train)
+
+    result_test_accuracy, result_test_roc_auc, result_confusion_matrix, result_class_report = test_results(dtc_model, X_test, y_test)
 
     end = time.time()
     elapsed = end - start
